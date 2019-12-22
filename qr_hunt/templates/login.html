@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    <div class="login-container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for m in messages %}
+
+        <p class="err-pw">{{m}}</p>
+
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form action="" method="POST">
+            <input type="text" placeholder="Username" name="username">
+            <input type="text" placeholder="Password" name="password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
+

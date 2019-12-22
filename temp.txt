@@ -1,0 +1,5 @@
+@app.route('/login')
+def login():
+    user = User.query.get(1)
+    login_user(user)
+    return 'Logged In '

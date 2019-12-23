@@ -1,5 +1,6 @@
-from flask import Flask, url_for, redirect, request, render_template, flash
+from flask import Flask, send_file,url_for, redirect, request, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
+import qrcode
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import UserMixin, LoginManager, login_user,logout_user, login_manager, login_required, logout_user
@@ -48,11 +49,11 @@ def login():
 def logout():
     logout_user()
 
-@app.route('/clue/<int:cl>/<int:cl_i>')
+@app.route('/clue/<int:cls>/<int:cl_i>')
 @login_required
-def clue(cl, cl_i):
+def clue(cls, cl_i):
 # !! note : will add a code so no one can change the url directly
-    c = Cluestack.query.get_or_404(cl)
+    c = Cluestack.query.get_or_404(cls)
     stack_i = current_user.stack_i
     if cl_i > stack_i:
         return "please request errror"
@@ -66,3 +67,32 @@ def clue(cl, cl_i):
 
     return c_i
 
+# stack_index = 
+@app.route('/qr/<int:cls>')
+@login_required
+def qr_gen(cls):
+    #->get the stack
+    l = len(Cluestack.query.get_or_404(cls).clue.all())
+    i=0
+    while i < l:
+        print("_____________url_______")
+        print("url"+"/clue/"+str(cls)+"/"+str(i)+"/")
+        i = i + 1
+    return str(l)
+
+# GeneratE LinkS with [StAck_naMe]
+# ---->
+# ---->
+# @ #-> get the Links And and [Create QRcOdE] 
+
+    # qr = qrcode.QRCode(
+    #     version=1, box_size=35, border=5
+    # )
+    # data = "http://google.com"
+    # qr.add_data(data)
+    # qr.make(fit=True)
+    # img = qr.make_image(fill="black", black_color="white")
+    # img.save("qr/qr11.png")
+    # # return "Hello"
+    # return send_file('../qr/qr11.png', mimetype='image/png')
+    

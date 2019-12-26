@@ -14,6 +14,8 @@
         {% if current_user.is_authenticated %}
         <div class="logout"><a href="{{url_for('logout')}}">Logout</a></div>
         <div class="tmName">{{current_user.name}}</div>
+        {% elif request.path == "/login" %}
+        <div class="wel">Welcome To QrHunt</div>
         {% else %}
         <div class="login"><a href="{{url_for('login')}}">Login</a></div>
         {% endif %}

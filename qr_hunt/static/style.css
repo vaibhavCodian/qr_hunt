@@ -92,5 +92,28 @@ input[type=text]:focus, input[type=password]:focus {
     font-size: 1.5em;
 
 }
-  
+.msg_e-section {
+    background-color: rgba(216, 216, 216, 0.678);
+    box-shadow: 5px 7px 1px #f53b3b, -10px -9px 1px #f61f1fc5, 15px -12px 1px #812626c5,-15px -9px 1px #310707b4;
+    padding: 10px 15px;
+    font-size: 1.5em;   
+}
+
+
+/* #qr_Section */
+.qr-content {
+    background-color: #f5f5f5;
+}  
+.qr-content h1 {
+    text-shadow: rgb(63, 131, 131) 4px 4px;
+}
+.qr-content img {
+    padding: 40px 40px;
+    margin: 25px 10px;
+    background-color: #3a3a3a;
+}
+
+.qr-content b {
+    font-size: 1.2em;
+}
 

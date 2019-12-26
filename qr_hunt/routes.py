@@ -28,18 +28,25 @@ admin.add_view(Controller(Clue, db.session))
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+@app.route('/')
+@app.route('/home')
+def home():
+    # generate urls and display only the once done
+    if current_user.is_authenticated:
+        urls = []
+        if current_user.stack_i == 0:
+            urls = url_gen(1)
+        return render_template("index.html", urls=urls, s_i=current_user.stack_i)
+        # return "logged"
+    else:
+        print("...................................////")
+        return render_template("index.html")
+        
 @app.route('/base/<path:filename>')
 def base_static(filename):
     return send_from_directory(app.root_path + '/static/', filename)
 
-@app.route('/')
-def index():
-    # generate urls and display only the once done
-    if current_user.is_authenticated:
-        urls = url_gen(1)
-        return render_template("index.html", urls=urls, s_i=current_user.stack_i)
-    else:
-        return render_template("index.html")
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -50,7 +57,7 @@ def login():
         user = User.query.filter_by(name= username).first()
         if user and user.passw == password:
             login_user(user, remember=True)
-            return redirect(url_for('index'))
+            return redirect(url_for('home'))
         else:
             flash(f'Login Unsuccessful. please check the username and password', 'danger')
 
@@ -71,10 +78,7 @@ def clue(cls, cl_i):
     stack_i = current_user.stack_i
     l = c.clue.count() - 1
     if cl_i > stack_i:
-        return "please request errror"
-    elif cl_i == l:
-        print(current_user.stack_i)
-        return "reached last clue.. Completed"
+        return render_template("clue.html", msg_e="Wrong😔 Place. Wrong Time, Better Luck Next Time.👍🏼 ")
     elif cl_i == current_user.stack_i:
         print("updating.................................................>>>>")
         current_user.stack_i = stack_i + 1
@@ -94,12 +98,12 @@ def qr_gen(cls):
 # url_gen=>
 def url_gen(cls):
     urls = []
-    url = "https://www.ramped.com/"
+    url = "https://qr-hu.herokuapp.com/"
     #->get the stack
     l = len(Cluestack.query.get_or_404(cls).clue.all())
     i=0
     while i < l:
-        u = url+"clue/"+str(cls)+"/"+str(i)+"/"
+        u = url+"clue/"+str(cls)+"/"+str(i)
         i = i + 1 
         urls.append(u)
     return urls

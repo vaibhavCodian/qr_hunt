@@ -1,8 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
+{% if clue %}
 <div class="clue-section">
     <p class="clue">{{ clue }}</p>
 </div>
+{% elif msg_e %}
+<div class="msg_e-section">
+    <p class="msg_e">{{ msg_e }}</p>
+</div>
+{% endif %}
 {% endblock content %}
 
 

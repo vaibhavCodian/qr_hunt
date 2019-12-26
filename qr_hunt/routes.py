@@ -50,7 +50,7 @@ def login():
         user = User.query.filter_by(name= username).first()
         if user and user.passw == password:
             login_user(user, remember=True)
-            return redirect("/")
+            return redirect(url_for('index'))
         else:
             flash(f'Login Unsuccessful. please check the username and password', 'danger')
 

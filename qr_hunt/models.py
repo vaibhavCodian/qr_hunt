@@ -21,8 +21,7 @@ class Cluestack(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     stack_name = db.Column(db.String)
     clue = db.relationship('Clue', backref='clue', lazy='dynamic')
- 
-
+    # add winner team name => and dont update it.
 class Clue(db.Model):
     id= db.Column(db.Integer, primary_key=True)
     clue_txt = db.Column(db.String, nullable=False)

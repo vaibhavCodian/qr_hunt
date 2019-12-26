@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="qr-content">
+    <h1>qr section</h1>
+
+    {% for url in urls %}
+        <b>{{ url }}</b>
+        <img src="{{ qrcode(url) }}" alt="" srcset="">
+        {{qrS}}
+        <br>
+    {% endfor %}
+</div>
+{% endblock content %}
+
+

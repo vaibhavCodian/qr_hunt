@@ -1,1 +1,18 @@
-<h1>index</h1>
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    {% if current_user.is_authenticated %}
+    <h2>Stack History</h2>
+    {% for _ in range(0, s_i) %}
+    <a href="{{urls[loop.index-1]}}">Clue {{loop.index}}</a>  <br>
+    {% endfor %}
+    {% else %}
+    <div class="no-reg">
+        <p>Please Get Registered By The Admin For The Game..></p>
+        <p>if <b>Registered</b> tHen <a href="{{url_for('login')}}">Login</a> and Scan The Qr Code GiVe By Admin From Any QrCOde Scanner App </p>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock content %}
+

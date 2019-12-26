@@ -1,0 +1,1 @@
+web: gunicorn qr_hunt:app --log-file=-

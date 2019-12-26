@@ -1,13 +1,17 @@
-from flask import Flask, send_file,url_for, redirect, request, render_template, flash
+from flask import Flask, send_file, send_from_directory,url_for, redirect, request, render_template, flash, Blueprint
 from flask_sqlalchemy import SQLAlchemy
-import qrcode
+from flask_qrcode import QRcode
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import UserMixin, LoginManager, login_user,logout_user, login_manager, login_required, logout_user
 from qr_hunt.models import User, Cluestack, Clue
 from qr_hunt import db, app, login, current_user
+import os
 
+blueprint = Blueprint('site', __name__, static_url_path='/static/site', static_folder='qr_hunt/static')
+app.register_blueprint(blueprint)
 
+qrcode = QRcode(app)
 class Controller(ModelView):
     def is_accessible(self):
         return current_user.is_admin
@@ -24,9 +28,18 @@ admin.add_view(Controller(Clue, db.session))
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+@app.route('/base/<path:filename>')
+def base_static(filename):
+    return send_from_directory(app.root_path + '/static/', filename)
+
 @app.route('/')
 def index():
-    return 'index.html!'
+    # generate urls and display only the once done
+    if current_user.is_authenticated:
+        urls = url_gen(1)
+        return render_template("index.html", urls=urls, s_i=current_user.stack_i)
+    else:
+        return render_template("index.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -37,7 +50,7 @@ def login():
         user = User.query.filter_by(name= username).first()
         if user and user.passw == password:
             login_user(user, remember=True)
-            return render_template('index.html')
+            return redirect("/")
         else:
             flash(f'Login Unsuccessful. please check the username and password', 'danger')
 
@@ -48,6 +61,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    return "LOgged Out"
 
 @app.route('/clue/<int:cls>/<int:cl_i>')
 @login_required
@@ -55,44 +69,41 @@ def clue(cls, cl_i):
 # !! note : will add a code so no one can change the url directly
     c = Cluestack.query.get_or_404(cls)
     stack_i = current_user.stack_i
+    l = c.clue.count() - 1
     if cl_i > stack_i:
         return "please request errror"
+    elif cl_i == l:
+        print(current_user.stack_i)
+        return "reached last clue.. Completed"
     elif cl_i == current_user.stack_i:
         print("updating.................................................>>>>")
         current_user.stack_i = stack_i + 1
         db.session.commit()
         print(current_user.stack_i)
-        
+    
     c_i = c.clue[cl_i].clue_txt
+    return render_template("clue.html", clue=c_i)
 
-    return c_i
-
-# stack_index = 
+# qr_gen => 
 @app.route('/qr/<int:cls>')
 @login_required
 def qr_gen(cls):
+    urls = url_gen(cls)
+    return render_template("qr_list.html",urls=urls)
+
+# url_gen=>
+def url_gen(cls):
+    urls = []
+    url = "https://www.ramped.com/"
     #->get the stack
     l = len(Cluestack.query.get_or_404(cls).clue.all())
     i=0
     while i < l:
-        print("_____________url_______")
-        print("url"+"/clue/"+str(cls)+"/"+str(i)+"/")
-        i = i + 1
-    return str(l)
+        u = url+"clue/"+str(cls)+"/"+str(i)+"/"
+        i = i + 1 
+        urls.append(u)
+    return urls
 
-# GeneratE LinkS with [StAck_naMe]
-# ---->
-# ---->
-# @ #-> get the Links And and [Create QRcOdE] 
 
-    # qr = qrcode.QRCode(
-    #     version=1, box_size=35, border=5
-    # )
-    # data = "http://google.com"
-    # qr.add_data(data)
-    # qr.make(fit=True)
-    # img = qr.make_image(fill="black", black_color="white")
-    # img.save("qr/qr11.png")
-    # # return "Hello"
-    # return send_file('../qr/qr11.png', mimetype='image/png')
-    
+
+

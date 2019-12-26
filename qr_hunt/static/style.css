@@ -1,0 +1,96 @@
+
+html{
+    
+    height: 100%;
+    
+}
+
+body{
+    
+    background-color: #f1f1f1;
+    /* background: url(images/sparkles.jpg) no-repeat; */
+    background-size: cover;
+    background-position: center;
+    font-weight: 500;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin: 10px 25px;
+}
+.content {
+    clear: both;
+    padding-top: 50px;
+}
+
+nav div{
+
+    padding: 10px 15px;
+    float: right;
+}
+nav .logo {
+    font-size: 1.5em;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    float: left;
+    text-shadow: rgba(10, 15, 24, 0.657) 2px 2px;
+}
+nav a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+nav .tmName {
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+nav .logout, .login {
+    border: rgb(8, 7, 15) solid 2px;
+    background-color: rgb(35, 43, 46);
+    border-radius: 1px;
+}
+nav .logout:hover, .login:hover {
+    border: rgb(23, 25, 32) solid 2px;
+    border-radius: 1px;
+    background-color: rgb(72, 77, 85);
+}
+
+nav {
+    clear: both;    
+}
+
+/* login */
+input[type=text], input[type=password] {
+    width: 85%;
+    padding: 15px 30px;
+    margin: 5px 20px 22px 0;
+    display: inline-block;
+    border: none;
+    border: solid #0e0e0eec 2px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    outline: none;
+}
+
+.loginBtn {
+    background-color: rgb(20, 27, 31);
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 40px;
+    border: none;
+    cursor: pointer;
+    width: 80%;
+    opacity: 0.9;
+}
+  
+.loginBtn:hover {
+    background-color: #383b3b;
+    opacity: 1;
+}
+
+/* clues */
+.clue-section {
+    background-color: rgba(216, 216, 216, 0.678);
+    box-shadow: 5px 7px 1px #659ee9, -10px -9px 1px #65e9b2c5;
+    padding: 10px 15px;
+    font-size: 1.5em;
+
+}
+  
+
